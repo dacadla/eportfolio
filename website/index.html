@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ePortfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Sofia+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Radovan Mihalik's ePortfolio</h1>
+        <p>Hello everyone and welcome to my ePortfolio! This is where I will have all my reflections for assignments in school, and other blog-like things.</p>
+    </header>
+    <div id="app">
+        <div>
+            <div v-if="!selectedBlog">
+                <!-- Blog list -->
+                <ul>
+                    <li v-for="blog in paginatedBlogs" :key="blog.id" class="blog-link">
+                        <a @click="viewBlog(blog)">{{ blog.title }}</a>
+                    </li>
+                </ul>
+                <!-- Pagination controls -->
+                <div>
+                    <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+                    <span class="pageNumber">{{ currentPage }}</span>
+                    <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+                </div>
+            </div>
+
+            <!-- Selected blog content -->
+            <div v-if="selectedBlog" class="container">
+                <button @click="backToList">Back to List</button>
+                <h2>{{ selectedBlog.title }}</h2>
+                <p>{{ selectedBlog.content }}</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Radovan Mihalik</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+/* Body styles */
+body {
+    font-family: 'Sofia Sans', sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Container styles */
+#app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    padding: 10px 0;
+    color: #fff;
+    position: sticky;
+    top: 0;
+}
+
+/* Blog list styles */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px;
+}
+
+a {
+    color: #ff8c00;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #e85a00;
+}
+
+button {
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-radius 0.2s; /* Add border-radius transition */
+    border-radius: 15px; /* Adjust border-radius to make it less rounded */
+}
+
+button:hover {
+    background-color: #e85a00;
+    border-radius: 20px; /* Increase border-radius on hover for a subtle effect */
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    padding: 10px 0;
+    color: #fff;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+/* Image styles */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.pageNumber {
+    padding: 0px 5px;
+}
