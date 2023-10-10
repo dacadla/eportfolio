@@ -1,62 +1,83 @@
-new Vue({
-    el: '#app',
-    data: {
-        blogs: [],  // Array to store the blogs from the JSON file
-        currentPage: 1,  // Current page for pagination
-        blogsPerPage: 5,  // Number of blogs to display per page
-        selectedBlog: null  // Store the selected blog to display
-    },
-    methods: {
-        // Function to load blogs from JSON file
-        loadBlogs() {
-            fetch('blogs.json') // Replace 'blogs.json' with your JSON file path
-            .then(response => response.json())
-            .then(data => {
-                // Reverse the array and assign IDs automatically in ascending order starting from 1
-                this.blogs = data.reverse().map((blog, index) => ({
-                    id: index + 1, // Assign IDs in ascending order
-                    ...blog
-                }));
-            })
-            .catch(error => {
-                console.error('Error loading blogs:', error);
-            });
-        },
-        // Function to display a blog
-        viewBlog(blog) {
-            this.selectedBlog = blog;
-        },
-        // Function to go back to the list view
-        backToList() {
-            this.selectedBlog = null;
-        },
-        // Function to go to the previous page
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-            }
-        },
-        // Function to go to the next page
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
-            }
+// Import necessary functions from Vue
+const { ref, reactive, computed, createApp } = Vue;
+
+const app = {
+    setup() {
+      const selectedBlog = ref(null); // Reactive reference
+      const currentPage = ref(1); // Reactive reference
+  
+      // Reactive object to store blogs and pagination data
+      const state = reactive({
+        blogs: [], // Array to store the blogs from the JSON file
+        blogsPerPage: 5 // Number of blogs to display per page
+      });
+  
+      // Load blogs from JSON file
+      const loadBlogs = async () => {
+        try {
+          const response = await fetch('blogs.json'); // Replace 'blogs.json' with your JSON file path
+          const data = await response.json();
+          // Reverse the array and assign IDs automatically in ascending order starting from 1
+          state.blogs = data.reverse().map((blog, index) => ({
+            id: index + 1, // Assign IDs in ascending order
+            ...blog
+          }));
+        } catch (error) {
+          console.error('Error loading blogs:', error);
         }
-    },
-    computed: {
-        // Calculate total number of pages
-        totalPages() {
-            return Math.ceil(this.blogs.length / this.blogsPerPage);
-        },
-        // Calculate the blogs to display on the current page
-        paginatedBlogs() {
-            const startIndex = (this.currentPage - 1) * this.blogsPerPage;
-            const endIndex = startIndex + this.blogsPerPage;
-            return this.blogs.slice(startIndex, endIndex);
+      };
+  
+      // Display a blog
+      const viewBlog = (blog) => {
+        selectedBlog.value = blog;
+      };
+  
+      // Go back to the list view
+      const backToList = () => {
+        selectedBlog.value = null;
+      };
+  
+      // Go to the previous page
+      const prevPage = () => {
+        if (currentPage.value > 1) {
+          currentPage.value--;
         }
-    },
-    created() {
-        // Load blogs when the Vue app is created
-        this.loadBlogs();
+      };
+  
+      // Go to the next page
+      const nextPage = () => {
+        if (currentPage.value < totalPages.value) {
+          currentPage.value++;
+        }
+      };
+  
+      // Calculate total number of pages
+      const totalPages = computed(() => {
+        return Math.ceil(state.blogs.length / state.blogsPerPage);
+      });
+  
+      // Calculate the blogs to display on the current page
+      const paginatedBlogs = computed(() => {
+        const startIndex = (currentPage.value - 1) * state.blogsPerPage;
+        const endIndex = startIndex + state.blogsPerPage;
+        return state.blogs.slice(startIndex, endIndex);
+      });
+  
+      // Load blogs when the setup is run
+      loadBlogs();
+  
+      return {
+        selectedBlog,
+        currentPage,
+        viewBlog,
+        backToList,
+        prevPage,
+        nextPage,
+        totalPages,
+        paginatedBlogs
+      };
     }
-});
+  };
+  
+  // Create the Vue app
+  createApp(app).mount('#app');
